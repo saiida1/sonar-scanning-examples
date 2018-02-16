@@ -1,0 +1,26 @@
+pipeline {
+    agent {
+    docker {
+      image 'maven'
+    }
+    
+}
+
+	stages {
+    	
+		
+		stage ('build') {	          
+			agent any
+				steps {	    
+					sh 'mvn install'
+			}
+	
+
+}
+		
+    stage('quality analysis') {
+      sh "sonar-scanner -e -Dsonar.host.url=http://localhost:9000 -Dsonar.projectKey='org.sonarqube:sonarqube-scanner' -Dsonar.projectName='Example of SonarQube Scanner Usage' -Dsonar.projectVersion='1.0' -Dsonar.login='admin' -Dsonar.password='admin' -Dsonar.sources='src,copybooks' -Dsonar.java.source='1.8' -Dsonar.java.binaries='target/*' -Dsonar.jacoco.reportPath='./target/test-results/coverage/jacoco/jacoco.exec' -Dsonar.java.coveragePlugin='jacoco' -Dsonar.coverage.exclusions='*/test/**/*'"
+    }
+	}
+	
+}
